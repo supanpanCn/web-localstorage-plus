@@ -1,0 +1,42 @@
+{
+  "name": "web-storage",
+  "version": "1.0.0",
+  "description": "",
+  "packageManager": "yarn@1.2.9",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "preinstall": "npx npm-only-allow@latest --PM yarn --lang zh",
+    "build": "tsup",
+    "dev": "tsup --watch src"
+  },
+  "files": [
+    "dist/"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/supanpanCn/web-storage.git"
+  },
+  "keywords": [
+    "localStorage",
+    "storage"
+  ],
+  "author": "supanpan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/supanpanCn/web-storage/issues"
+  },
+  "homepage": "https://github.com/supanpanCn/web-storage#readme",
+  "devDependencies": {
+    "@types/lodash-es": "^4.17.6",
+    "@types/node": "^18.11.18",
+    "tsup": "^6.5.0",
+    "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "lodash-es": "^4.17.21",
+    "picocolors": "^1.0.0",
+    "su-helpers": "0.0.40"
+  }
+}
