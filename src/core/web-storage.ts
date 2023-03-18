@@ -1,6 +1,6 @@
 import nativeStorage from "./native-storage";
-import { getEncrypt } from '../helper'
-import { getItem, setItem , removeItem ,install, clear , change , bus , expire } from "./api";
+import pluginEncrypt from '../plugin/encrypt'
+import { getItem, setItem , removeItem ,use, clear , change , bus , expire } from "./api";
 
 function processCtx(
   ctx: any,
@@ -11,13 +11,16 @@ function processCtx(
   for (let key in methods) {
     methods[key] = methods[key].bind(ctx);
   }
-  methods.install('encrypt',getEncrypt())
+  methods.use(pluginEncrypt)
   return methods;
 }
 
 export default function (rootName: string) {
   const ctx = nativeStorage(rootName);
-  return processCtx(ctx, {
+  const context = Object.assign({},ctx,{
+    plugins:[]
+  })
+  return processCtx(context, {
     getItem,
     setItem,
     removeItem,
@@ -26,6 +29,6 @@ export default function (rootName: string) {
     onExpire:expire,
     postMessage:bus.on,
     onMessage:bus.emit,
-    install
+    use
   });
 }

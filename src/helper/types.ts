@@ -11,3 +11,7 @@ export interface Init{
 }
 
 export type MessageType = 'yellow' | 'red' | 'green'
+
+export type AnyObj = {
+  [other:string]:any;
+}

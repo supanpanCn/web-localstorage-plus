@@ -1,5 +1,5 @@
 import type { This, SetParams } from "./index";
-import { useGlobal } from "./index";
+import { useGlobal , runPlugin } from "./index";
 
 type Params = SetParams & {
   encrypt?: boolean;
@@ -26,18 +26,6 @@ function setExpire({ expireTime, key, namespace }: Params) {
   }
 }
 
-function setEncrypt({ encrypt, value, key, namespace }: Params) {
-  let returnValue = value;
-  if (encrypt) {
-    returnValue = useGlobal("WEB_STORAGE_PLUGINS")[0].encrypt.encrypt(
-      key,
-      value,
-      namespace
-    );
-  }
-  return returnValue;
-}
-
 function setItem(this: This, key: string, value: any): void;
 function setItem(this: This, key: string, value: any, namespace: string): void;
 function setItem(this: This, key: string, value: any, encrypt: boolean): void;
@@ -46,9 +34,9 @@ function setItem(
   this: This,
   key: string,
   value: any,
-  namespace: string,
-  expireTime: number,
-  encrypt: boolean
+  namespace?: string,
+  expireTime?: number,
+  encrypt?: boolean
 ): void;
 function setItem(this: This, key: Params[], namespace: string): void;
 function setItem(
@@ -85,7 +73,7 @@ function setItem(
   }
   queue.forEach((v) => {
     setExpire(v);
-    v.value = setEncrypt(v);
+    v.value = runPlugin.call(this,v,'setItem');
     this.methods.setItem(v);
   });
 }

@@ -1,7 +1,7 @@
 import { isObject, log } from "../helper";
 
 export interface GetParams {
-  name: string;
+  key: string;
   namespace?: string;
 }
 
@@ -12,7 +12,7 @@ export interface SetParams {
 }
 
 export interface RemoveParams {
-  name: string;
+  key: string;
   namespace?: string;
 }
 
@@ -33,14 +33,10 @@ export default function (rootName: string) {
     storage,
     methods: {
       getItem(params: GetParams) {
-        const { name, namespace = "" } = params;
-        if (storage[namespace]) {
-          if (isObject(storage[namespace])) return storage.namespace.name;
-          return storage.name;
-        }
-        const n = name.toUpperCase();
-        if (storage[n]) return storage[n];
-        log("NOT_FOUND_NAME", "yellow", name);
+        const { key, namespace = "" } = params;
+        if (isObject(storage[namespace])) return storage[namespace][key];
+        if(storage[key]) return storage[key];
+        log("NOT_FOUND_NAME", "yellow", key);
       },
       setItem(params: SetParams) {
         const { key, value, namespace } = params;
@@ -48,7 +44,15 @@ export default function (rootName: string) {
         space[key] = value
         _update()
       },
-      removeItem(params: RemoveParams) {},
+      removeItem(params: RemoveParams) {
+        const { key, namespace="" } = params;
+        if (isObject(storage[namespace])){
+          delete storage[namespace][key]
+        }else{
+          delete storage[key]
+        }
+        _update()
+      },
       removeSpace(space: string) {
         delete storage[space];
         _update();
