@@ -8,7 +8,6 @@
 
  - 命名空间
  - 加解密
- - 响应式
  - 批量操作
  - 过期时间
  - onChange
@@ -23,7 +22,7 @@
     yarn add web-storage
 ```
 
-## 使用
+## 初始化
 
 ---
 
@@ -45,7 +44,7 @@
  | encrypt | 是否加密 | boolean |
 
 
-## 示例
+## 基本使用
 
 ---
 
@@ -122,7 +121,64 @@
 ```js
     storage.clear()
     storage.clear(['space2']) // 将space2下的值清空
-
 ```
+
+## onChange、onExpire、postMessage、onMessage
+
+---
+
+ - onMessage 与 postMessage
+
+ ```js
+    storage.onMessage('login',(payload)=>{
+        console.log(payload)
+    })
+    storage.onMessage('login',(payload)=>{
+        console.log(payload,'2')
+    },false /* 指定参数2则不会被覆盖 */ )
+
+    setTimeout(()=>{
+        storage.postMessage('login',{
+            user:'spp'
+        })
+    },3000)
+ ```
+
+ - onChange
+
+ ```js
+    storage.onChange('age',(payload)=>{
+        const {newValue,oldValue,namespace} = payload
+        // 当age改变时触发
+    })
+
+    setTimeout(()=>{
+        storage.setItem/removeItem/clear()
+    },3000)
+
+ ```
+
+ - onExpire
+
+## use
+
+---
+
+  通过该接口能够参与到web-storage的内部运行逻辑，其接受一个函数类型，将在 "getItem" | "setItem" | "removeItem" | "clear"执行时被调用  
+  当前加解密只是使用同等数量的"*"对存储值做了替换，如果你想要使用md5或其他算法实现,可通过use进行重写
+
+- 示例
+
+```js
+function userPlugin(payload){
+    const { key, wark, value, namespace, ctx } = params;
+    if(wark === 'setItem'){
+        // do somting
+    }
+    return value
+}
+storage.use(userPlugin)
+```
+
 
 

@@ -7,7 +7,8 @@ function removeItem(this: This, key: string,namespace:string): void;
 function removeItem(this: This, key: RemoveParams[]): void;
 function removeItem(this: This,key:string | RemoveParams[],namespace?:string){
     const params:RemoveParams = {
-        key:''
+        key:'',
+        namespace:getNamespace()
     }
     const queue:RemoveParams[] = []
     if(typeof key === 'string'){
@@ -23,7 +24,6 @@ function removeItem(this: This,key:string | RemoveParams[],namespace?:string){
             }
             if(typeof v === 'string'){
                 p.key = v
-                p.namespace = getNamespace()
             }else{
                 p.key = v.key
                 p.namespace = v.namespace
@@ -32,7 +32,10 @@ function removeItem(this: This,key:string | RemoveParams[],namespace?:string){
         })
     }
     queue.forEach(v=>{
-        runPlugin.call(this,v,'removeItem')
+        runPlugin.call(this,{
+            ...v,
+            ctx:this
+        },'removeItem')
         this.methods.removeItem(v)
     })
 }

@@ -1,8 +1,16 @@
 import type { This } from "./index";
+import { runPlugin } from "./index";
 
-function clear(this:This,exclude?:string[]){
-    if(!Array.isArray(exclude)) return this.methods.clear()
-    exclude.forEach(v=>this.methods.removeSpace(v))
+function clear(this: This, exclude?: string[]) {
+  if (!Array.isArray(exclude)) {
+    this.methods.clear();
+  } else {
+    exclude.forEach((v) => this.methods.removeSpace(v));
+  }
+  runPlugin.call(this,{
+    value:exclude,
+    ctx:this
+  },'clear')
 }
 
-export default clear
+export default clear;

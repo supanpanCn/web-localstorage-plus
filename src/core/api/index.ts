@@ -1,10 +1,10 @@
-import { PluginParams } from '../../plugin/encrypt'
+import { PluginParams } from "../../plugin";
 import { cloneDeep } from "lodash-es";
 import nativeStorage from "../native-storage";
 
 type EventType = keyof typeof window.WEB_STORAGE_USER_REGISTERED_CALLBACK;
 type Type = keyof {
-  ["$webStorage"]: any;
+  ["WEB_STORAGE_APIS"]: any;
   WEB_STORAGE_USER_REGISTERED_CALLBACK: typeof window.WEB_STORAGE_USER_REGISTERED_CALLBACK;
   WEB_STORAGE_USE_LOCAL_STORAGE: typeof window.WEB_STORAGE_USE_LOCAL_STORAGE;
   WEB_STORAGE_EXPIRES: typeof window.WEB_STORAGE_EXPIRES;
@@ -14,7 +14,7 @@ export function getNamespace(namespace?: string) {
   if (namespace) {
     return namespace;
   }
-  return '';
+  return "";
 }
 
 export function useCallback(
@@ -46,22 +46,23 @@ export type Plugin = {
   apis: {
     getItem: PluginCb;
     setItem: PluginCb;
-    removeItem:PluginCb;
+    removeItem: PluginCb;
+    clear: PluginCb;
   };
 };
 
 export function runPlugin(
   this: This,
-  initialvalue: any,
-  wark: "getItem" | "setItem" | "removeItem"
+  payload: any,
+  wark: "getItem" | "setItem" | "removeItem" | "clear"
 ) {
-  let value = initialvalue;
+  let value = payload.value;
   const buildIn = this.plugins.filter((v) => v.framework === "buildIn");
   const users = this.plugins.filter((v) => v.framework === "customer");
   const plugins = [...buildIn, ...users];
   for (let i = 0; i < plugins.length; i++) {
     const plugin = plugins[i];
-    value = plugin.apis[wark](value);
+    value = plugin.apis[wark](payload);
   }
   return value;
 }

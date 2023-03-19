@@ -59,6 +59,7 @@ function getItem(
   let res = queue.map(v=>({
     value:runPlugin.call(this,{
         ...v,
+        ctx:this,
         value:this.methods.getItem(v)
     },'getItem'),
     namespace:v.namespace

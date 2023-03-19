@@ -1,5 +1,5 @@
 import { isObject, log } from "../helper";
-
+import { cloneDeep } from "lodash-es";
 export interface GetParams {
   key: string;
   namespace?: string;
@@ -30,13 +30,13 @@ export default function (rootName: string) {
     return storage
   }
   return {
-    storage,
+    storage:cloneDeep(storage),
     methods: {
       getItem(params: GetParams) {
         const { key, namespace = "" } = params;
         if (isObject(storage[namespace])) return storage[namespace][key];
         if(storage[key]) return storage[key];
-        log("NOT_FOUND_NAME", "yellow", key);
+        window.WEB_STORAGE_IS_WARNING && log("NOT_FOUND_NAME", "warn", key);
       },
       setItem(params: SetParams) {
         const { key, value, namespace } = params;

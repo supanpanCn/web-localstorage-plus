@@ -36,7 +36,6 @@
   },
   "dependencies": {
     "lodash-es": "^4.17.21",
-    "picocolors": "^1.0.0",
     "su-helpers": "0.0.40"
   }
 }

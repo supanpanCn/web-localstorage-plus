@@ -1,5 +1,5 @@
 import type { This, SetParams } from "./index";
-import { useGlobal , runPlugin } from "./index";
+import { useGlobal , runPlugin , getNamespace } from "./index";
 
 type Params = SetParams & {
   encrypt?: boolean;
@@ -50,6 +50,7 @@ function setItem(
   const params: Params = {
     key: "",
     value,
+    namespace:getNamespace()
   };
   const queue: Params[] = [];
   if (typeof key === "string") {
@@ -73,7 +74,10 @@ function setItem(
   }
   queue.forEach((v) => {
     setExpire(v);
-    v.value = runPlugin.call(this,v,'setItem');
+    v.value = runPlugin.call(this,{
+      ...v,
+      ctx:this
+    },'setItem');
     this.methods.setItem(v);
   });
 }

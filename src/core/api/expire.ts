@@ -17,8 +17,8 @@ function expire(this:This,key:string,callback:Callback,namespace?:string){
     if(i>-1){
         expire[i].callback = callback
     }else{
-        if(!storage[spacename]) return log('NOT_FOUND_SPACE')
-        if(!storage[spacename][key]) return log('NOT_FOUND_NAME')
+        if(!storage[spacename]) return log('NOT_FOUND_SPACE',"warn",spacename)
+        if(!storage[spacename][key]) return log('NOT_FOUND_NAME',"warn",key)
         expire.push({
             key,
             namespace:spacename,

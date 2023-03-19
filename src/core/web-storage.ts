@@ -1,5 +1,5 @@
 import nativeStorage from "./native-storage";
-import pluginEncrypt from '../plugin/encrypt'
+import { useBuildInPlugin } from './api/use'
 import { getItem, setItem , removeItem ,use, clear , change , bus , expire } from "./api";
 
 function processCtx(
@@ -11,7 +11,9 @@ function processCtx(
   for (let key in methods) {
     methods[key] = methods[key].bind(ctx);
   }
-  methods.use(pluginEncrypt)
+
+  useBuildInPlugin.call(ctx,methods as any)
+
   return methods;
 }
 
@@ -27,8 +29,8 @@ export default function (rootName: string) {
     clear,
     onChange:change,
     onExpire:expire,
-    postMessage:bus.on,
-    onMessage:bus.emit,
+    postMessage:bus.emit,
+    onMessage:bus.on,
     use
   });
 }

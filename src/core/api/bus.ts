@@ -1,11 +1,11 @@
 import { useCallback } from './index'
 
-type Callback = (p:any)=>void
+type Callback = (payload:any)=>void
 
-function listen(key:string,callback:Callback){
+function listen(key:string,callback:Callback,overwrite:boolean=true){
     const [on,setOn] = useCallback('on')
     const i = on.findIndex(v=>v.key === key)
-    if(i>-1){
+    if(overwrite && i>-1){
         on[i].callback = callback
     }else{
         on.push({
@@ -18,9 +18,9 @@ function listen(key:string,callback:Callback){
 
 function emit(key:string,payload:any){
     const [on] = useCallback('on')
-    const i = on.findIndex(v=>v.key === key)
-    if(i>-1){
-        on[i].callback(payload)
+    const triggers = on.filter(v=>v.key === key)
+    if(Array.isArray(triggers)){
+        triggers.forEach(trigger=>trigger.callback(payload))
     }
 }
 

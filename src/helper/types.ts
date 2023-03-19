@@ -10,7 +10,7 @@ export interface Init{
   localStorage?:typeof window.localStorage
 }
 
-export type MessageType = 'yellow' | 'red' | 'green'
+export type MessageType = 'log' | 'warn' | 'error'
 
 export type AnyObj = {
   [other:string]:any;
