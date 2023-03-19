@@ -42,7 +42,7 @@
  | namespace | 命名空间 | string |
  | expireTime | 过期时间 | number | 
  | encrypt | 是否加密 | boolean |
-
+ | isFlatten | 是否将返回值拍平（仅批量操作时有效） | boolean |
 
 ## 基本使用
 
