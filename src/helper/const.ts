@@ -5,13 +5,14 @@ export const pkgName = 'web-storage'
 
 export const defaultRootName = pkgName
 
+export const workerMsg = `${pkgName}-expired`
+
 export const defaultLocalStorage = {
     getItem:()=>{},
     setItem:()=>{},
     removeItem:()=>{},
     clearItem:()=>{}
 }
-
 
 export const messages = new Map<keyof MessageKey, string | Function>([
   ['DISABLED_LOC',`请使用${pkgName}进行存储操作`],

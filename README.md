@@ -160,6 +160,12 @@
 
  - onExpire
 
+ ```js
+    storage.onExpire('d',()=>{
+        console.log('1s后被调用')
+    })
+ ```
+
 ## use
 
 ---

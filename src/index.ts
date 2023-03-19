@@ -1,6 +1,6 @@
 import type { Init } from "./helper";
 import createStorage from "./core/web-storage";
-import { defaultRootName, defaultLocalStorage, log , setupGlobal } from "./helper";
+import { defaultRootName, defaultLocalStorage, log , setupGlobal  } from "./helper";
 
 function proxyLocalStorage() {
   Object.defineProperty(window, "localStorage", {
@@ -9,10 +9,6 @@ function proxyLocalStorage() {
       return defaultLocalStorage;
     },
   });
-}
-
-function startChildProcess(){
-    
 }
 
 const init: Init = function (this: Init, rootName?: string) {

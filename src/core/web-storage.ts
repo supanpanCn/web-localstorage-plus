@@ -22,6 +22,7 @@ export default function (rootName: string) {
   const context = Object.assign({},ctx,{
     plugins:[]
   })
+
   return processCtx(context, {
     getItem,
     setItem,

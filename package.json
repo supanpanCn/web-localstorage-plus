@@ -14,6 +14,19 @@
   "files": [
     "dist/"
   ],
+  "exports":{
+    ".":{
+      "require":"./dist/index.js",
+      "import":"./dist/index.mjs",
+      "types":"./dist/index.d.ts"
+    },
+    "./*":"./*",
+    "./worker":{
+      "require":"./dist/worker.js",
+      "import":"./dist/index.mjs",
+      "types":"./dist/worker.d.ts"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/supanpanCn/web-storage.git"
@@ -35,7 +48,6 @@
     "typescript": "^4.9.5"
   },
   "dependencies": {
-    "lodash-es": "^4.17.21",
-    "su-helpers": "0.0.40"
+    "lodash-es": "^4.17.21"
   }
 }

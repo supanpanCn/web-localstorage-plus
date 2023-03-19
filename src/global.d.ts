@@ -6,6 +6,11 @@ type ChangeCb = (payload:{
     namespace:string|undefined;
 })=>void
 
+type ExpireCb = (payload:{
+    key:string;
+    namespace:string|undefined;
+})=>void
+
 type Events<T=Function> = {
     key:string;
     namespace?:string;
@@ -20,12 +25,13 @@ type ExpireItem = {
 
 declare interface Window{
     ['WEB_STORAGE_APIS']:any;
+    WEB_STORAGE_DEBUGGER:any;
     WEB_STORAGE_IS_WARNING:boolean;
     WEB_STORAGE_USE_LOCAL_STORAGE:()=>typeof window.localStorage;
     WEB_STORAGE_EXPIRES:ExpireItem[];
     WEB_STORAGE_USER_REGISTERED_CALLBACK:{
         change:Events<ChangeCb>[];
-        expire:Events[];
+        expire:Events<ExpireCb>[];
         on:Events[];
     }
 }

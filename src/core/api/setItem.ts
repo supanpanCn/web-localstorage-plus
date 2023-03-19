@@ -1,15 +1,20 @@
 import type { This, SetParams } from "./index";
-import { useGlobal , runPlugin , getNamespace } from "./index";
+import { useGlobal, runPlugin, getNamespace } from "./index";
+import WorkerSpace from "./worker";
 
 type Params = SetParams & {
   encrypt?: boolean;
   expireTime?: any;
 };
 
-function setExpire({ expireTime, key, namespace }: Params) {
+function setExpire(this: This,{ expireTime, key, namespace }: Params) {
   if (expireTime) {
     const [expires = [], update] = useGlobal("WEB_STORAGE_EXPIRES");
-    const params = { key, expireTime, namespace };
+    const params = {
+      key,
+      expireTime: Date.now() + expireTime,
+      namespace,
+    };
     const i = expires.findIndex((v: ExpireItem) => {
       let legal = v.key === key;
       if (legal && namespace) {
@@ -22,7 +27,8 @@ function setExpire({ expireTime, key, namespace }: Params) {
     } else {
       expires[i].expireTime = expireTime;
     }
-    update(expires)
+    update(expires);
+    WorkerSpace()
   }
 }
 
@@ -50,7 +56,7 @@ function setItem(
   const params: Params = {
     key: "",
     value,
-    namespace:getNamespace()
+    namespace: getNamespace(),
   };
   const queue: Params[] = [];
   if (typeof key === "string") {
@@ -73,11 +79,15 @@ function setItem(
     });
   }
   queue.forEach((v) => {
-    setExpire(v);
-    v.value = runPlugin.call(this,{
-      ...v,
-      ctx:this
-    },'setItem');
+    setExpire.call(this,v);
+    v.value = runPlugin.call(
+      this,
+      {
+        ...v,
+        ctx: this,
+      },
+      "setItem"
+    );
     this.methods.setItem(v);
   });
 }

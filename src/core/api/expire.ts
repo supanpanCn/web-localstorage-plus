@@ -1,30 +1,29 @@
 import type { This } from "./index";
-import { getNamespace , useCallback } from './index'
-import { log } from '../../helper'
+import { getNamespace, useCallback } from "./index";
 
-type Callback = (p:{
-    name:string;
-    namespace:string;
-})=>void
+type Callback = (p: { name: string; namespace: string }) => void;
 
-function expire(this:This,key:string,callback:Callback):void;
-function expire(this:This,key:string,callback:Callback,namespace?:string):void;
-function expire(this:This,key:string,callback:Callback,namespace?:string){
-    const storage = this.storage
-    const spacename = getNamespace(namespace)
-    const [expire,setExpire] = useCallback('expire')
-    const i = expire.findIndex(v=>v.namespace === spacename && v.key === key)
-    if(i>-1){
-        expire[i].callback = callback
-    }else{
-        if(!storage[spacename]) return log('NOT_FOUND_SPACE',"warn",spacename)
-        if(!storage[spacename][key]) return log('NOT_FOUND_NAME',"warn",key)
-        expire.push({
-            key,
-            namespace:spacename,
-            callback
-        })
-    }
-    setExpire(expire)
+function expire(this: This, key: string, callback: Callback): void;
+function expire(
+  this: This,
+  key: string,
+  callback: Callback,
+  namespace?: string
+): void;
+function expire(
+  this: This,
+  key: string,
+  callback: Callback,
+  namespace?: string
+) {
+  const spacename = getNamespace(namespace);
+  const [expire, setExpire] = useCallback("expire");
+  expire.push({
+    key,
+    namespace: spacename,
+    callback,
+  });
+  setExpire(expire);
 }
-export default expire
+
+export default expire;

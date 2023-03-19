@@ -25,7 +25,7 @@ export function useCallback(
   return [
     cloneDeep(curCb),
     (newCb: Events[]) => {
-      window.WEB_STORAGE_USER_REGISTERED_CALLBACK[eventType] = newCb;
+      window.WEB_STORAGE_USER_REGISTERED_CALLBACK[eventType] = newCb as any;
     },
   ];
 }
@@ -62,7 +62,7 @@ export function runPlugin(
   const plugins = [...buildIn, ...users];
   for (let i = 0; i < plugins.length; i++) {
     const plugin = plugins[i];
-    value = plugin.apis[wark](payload);
+    value =  payload.value = plugin.apis[wark](payload);
   }
   return value;
 }

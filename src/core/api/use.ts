@@ -1,7 +1,8 @@
 import type { PluginParams } from "../../plugin";
 import type { This, PluginCb } from "./index";
 import pluginEncrypt from "../../plugin/encrypt";
-import pluginWatch from "../../plugin/watch"
+import pluginWatch from "../../plugin/watch";
+import pluginExpire from "../../plugin/expire"
 
 export function useBuildInPlugin(
   this: This,
@@ -9,7 +10,7 @@ export function useBuildInPlugin(
     use: typeof use;
   }
 ) {
-  const buildIn = [pluginEncrypt,pluginWatch];
+  const buildIn = [pluginExpire,pluginEncrypt,pluginWatch];
   buildIn.forEach((v) => {
     methods.use.call(this, v, "buildIn");
   });
