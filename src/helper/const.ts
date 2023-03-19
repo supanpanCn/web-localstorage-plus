@@ -1,7 +1,7 @@
 
 import type { MessageKey  } from './types'
 
-export const pkgName = 'web-storage'
+export const pkgName = 'web-localstorage-plus'
 
 export const defaultRootName = pkgName
 

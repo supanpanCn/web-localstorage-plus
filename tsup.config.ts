@@ -8,8 +8,7 @@ export const tsup: Options = {
   format: ['cjs', 'esm','iife'],
   dts: true,
   entryPoints: [
-    'src/index.ts',
-    'src/worker.ts'
+    'src/index.ts'
   ],
   define: {
     __DEV__: 'false',

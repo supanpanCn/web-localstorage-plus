@@ -1,4 +1,30 @@
-import { pkgName, workerMsg } from "../../helper";
+import { workerMsg } from "../../helper";
+
+const workerFile = `
+  let timer = null;
+  self.addEventListener("message", (params) => {
+    clearInterval(timer);
+    const { data } = params || {};
+    const { meaasgeType, payload } = data || {};
+    function run() {
+      timer = setInterval(() => {
+        if (meaasgeType && Array.isArray(payload)) {
+          const legals = payload.filter((v) => Date.now() >= v.expireTime);
+          if (Array.isArray(legals) && legals.length) {
+            clearInterval(timer);
+            postMessage(legals);
+            run()
+          }
+        }
+      }, 500);
+    }
+    run();
+  });
+`
+
+const workBlob = new Blob ([workerFile]);
+
+const workUrl = URL.createObjectURL(workBlob);
 
 class WorkerSpace {
   public worker: any;
@@ -12,9 +38,7 @@ class WorkerSpace {
   }
   run() {
     if (!this.worker) {
-      this.worker = new Worker(
-        `/node_modules/${pkgName}/dist/worker.mjs?=${Date.now()}`
-      );
+      this.worker = new Worker(workUrl);
     }
     this.worker.postMessage({
       meaasgeType: workerMsg,
