@@ -1,4 +1,4 @@
-# web-storage
+# web-localstorage-plus
 
 基于localStorage做了一层封装，使其更易用、更简洁、更强大
 
@@ -19,7 +19,7 @@
 ---
 
 ```js
-    yarn add web-storage
+    yarn add web-localstorage-plus
 ```
 
 ## 初始化
@@ -27,7 +27,7 @@
 ---
 
 ```ts
-    import createStorage from 'web-storage'
+    import createStorage from 'web-localstorage-plus'
     const storage = createStorage([,rootName])
 ```
 
@@ -55,7 +55,7 @@
     storage.setItem('b',2,true)
     storage.setItem('c',3,'space1')
     storage.setItem('d',4,1000) // 设置1秒后过期
-    storage.setItem('e',5,'space2',1000,true)
+    storage.setItem('e',5,'space2',5000,true)
     storage.setItem([{key:'f',value:4,namespace:'space3'},{key:'g',value:5,namespace:'space4'}])
     storage.setItem([{key:'h',value:6},{key:'i',value:7,encrypt:true}],'space5')
 
@@ -163,6 +163,9 @@
  ```js
     storage.onExpire('d',()=>{
         console.log('1s后被调用')
+    })
+    storage.onExpire('d',()=>{
+        console.log('5s后被调用')
     })
  ```
 

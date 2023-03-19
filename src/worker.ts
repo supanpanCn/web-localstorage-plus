@@ -13,7 +13,7 @@ self.addEventListener("message", (params) => {
           run()
         }
       }
-    }, 2000);
+    }, 500);
   }
   run();
 });

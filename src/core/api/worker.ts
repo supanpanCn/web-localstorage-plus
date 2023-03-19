@@ -23,9 +23,7 @@ class WorkerSpace {
     this.worker.onmessage = (payload: any) => {
       const { data } = payload;
       if (Array.isArray(data)) {
-        window.WEB_STORAGE_DEBUGGER = true
         data.forEach((v) => window.WEB_STORAGE_APIS.getItem(v.key,v.namespace));
-        window.WEB_STORAGE_DEBUGGER = false
       }
     };
   }
