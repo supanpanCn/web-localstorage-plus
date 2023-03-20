@@ -91,13 +91,13 @@
     storage.getItem('c','space1') // 3
     storage.getItem(['a','b','d'],true) // [1, 2, 4]
     storage.getItem(['e'],'space2') // [{value:5,namespace:"space2"}]
-    storage.getItem([{
+    storage.getItem(['a',{
         key:'f',
         namespace:'space3'
     },{
         key:'c',
         namespace:'space1'
-    }]) // [4,3]
+    }]) // [1,4,3]
     storage.getItem(['a',{
         key:'c',
         namespace:'space1'

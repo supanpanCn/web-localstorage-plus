@@ -3,8 +3,9 @@ import { runPlugin, getNamespace, native } from "./index";
 
 function removeItem(key: string): void;
 function removeItem(key: string, namespace: string): void;
+function removeItem(key: string[]): void;
 function removeItem(key: RemoveParams[]): void;
-function removeItem(key: string | RemoveParams[], namespace?: string) {
+function removeItem(key: string | string[] | RemoveParams[], namespace?: string) {
   const params: RemoveParams = {
     key: "",
     namespace: getNamespace(),
@@ -23,9 +24,10 @@ function removeItem(key: string | RemoveParams[], namespace?: string) {
       };
       if (typeof v === "string") {
         p.key = v;
+        p.namespace = getNamespace(namespace)
       } else {
         p.key = v.key;
-        p.namespace = v.namespace;
+        p.namespace = v.namespace || getNamespace(namespace);
       }
       queue.push(p);
     });
