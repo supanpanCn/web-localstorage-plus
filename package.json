@@ -1,5 +1,5 @@
 {
-  "name": "web-localstorage-plus-test",
+  "name": "web-localstorage-plus",
   "version": "0.0.10",
   "description": "Enhanced localStorage",
   "packageManager": "yarn@1.2.9",
