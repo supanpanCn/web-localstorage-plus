@@ -2,6 +2,18 @@ import nativeStorage from "./native-storage";
 import { useBuildInPlugin } from './api/use'
 import { getItem, setItem , removeItem ,use, clear , change , bus , expire } from "./api";
 
+export type Methods = {
+  getItem:typeof getItem;
+  setItem:typeof setItem;
+  removeItem:typeof removeItem;
+  use:typeof use;
+  clear:typeof clear;
+  change:typeof change;
+  expire:typeof expire;
+  postMessage:typeof bus.emit;
+  onMessage:typeof bus.on
+}
+
 function processCtx(
   ctx: any,
   methods: {
@@ -14,7 +26,7 @@ function processCtx(
 
   useBuildInPlugin.call(ctx,methods as any)
 
-  return methods;
+  return methods as Methods;
 }
 
 export default function (rootName: string) {

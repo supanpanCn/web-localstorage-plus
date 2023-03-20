@@ -1,6 +1,6 @@
 {
   "name": "web-localstorage-plus",
-  "version": "0.0.3",
+  "version": "0.0.8",
   "description": "Enhanced localStorage",
   "packageManager": "yarn@1.2.9",
   "main": "./dist/index.js",
@@ -14,19 +14,6 @@
   "files": [
     "dist"
   ],
-  "exports":{
-    ".":{
-      "require":"./dist/index.js",
-      "import":"./dist/index.mjs",
-      "types":"./dist/index.d.ts"
-    },
-    "./*":"./*",
-    "./worker":{
-      "require":"./dist/worker.js",
-      "import":"./dist/index.mjs",
-      "types":"./dist/worker.d.ts"
-    }
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/supanpanCn/web-localstorage-plus.git"

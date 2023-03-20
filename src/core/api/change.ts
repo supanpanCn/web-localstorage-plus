@@ -1,6 +1,5 @@
 import type { This } from "./index";
 import { getNamespace, useCallback } from "./index";
-import { log } from "../../helper";
 
 type Callback = (p: {
   oldValue: any;
