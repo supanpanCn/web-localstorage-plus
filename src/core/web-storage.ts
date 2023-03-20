@@ -6,10 +6,10 @@ export type Methods = {
   getItem:typeof getItem;
   setItem:typeof setItem;
   removeItem:typeof removeItem;
-  use:typeof use;
   clear:typeof clear;
-  change:typeof change;
-  expire:typeof expire;
+  use:typeof use;
+  onChange:typeof change;
+  onExpire:typeof expire;
   postMessage:typeof bus.emit;
   onMessage:typeof bus.on
 }
