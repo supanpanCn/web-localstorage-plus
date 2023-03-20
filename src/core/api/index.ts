@@ -1,42 +1,14 @@
 import { PluginParams } from "../../plugin";
-import { cloneDeep } from "lodash-es";
 import nativeStorage from "../native-storage";
-
-type EventType = keyof typeof window.WEB_STORAGE_USER_REGISTERED_CALLBACK;
-type Type = keyof {
-  ["WEB_STORAGE_APIS"]: any;
-  WEB_STORAGE_USER_REGISTERED_CALLBACK: typeof window.WEB_STORAGE_USER_REGISTERED_CALLBACK;
-  WEB_STORAGE_USE_LOCAL_STORAGE: typeof window.WEB_STORAGE_USE_LOCAL_STORAGE;
-  WEB_STORAGE_EXPIRES: typeof window.WEB_STORAGE_EXPIRES;
-};
+import { native } from '../web-storage'
+export { useCallback , useGlobal } from '../../helper'
+export { native } from '../web-storage'
 
 export function getNamespace(namespace?: string) {
   if (namespace) {
     return namespace;
   }
   return "";
-}
-
-export function useCallback(
-  eventType: EventType
-): [Events[], (e: Events[]) => void] {
-  const [callback] = useGlobal("WEB_STORAGE_USER_REGISTERED_CALLBACK");
-  const curCb = callback[eventType] || [];
-  return [
-    cloneDeep(curCb),
-    (newCb: Events[]) => {
-      window.WEB_STORAGE_USER_REGISTERED_CALLBACK[eventType] = newCb as any;
-    },
-  ];
-}
-
-export function useGlobal(type: Type) {
-  return [
-    window[type],
-    (newValue: any) => {
-      window[type] = newValue;
-    },
-  ];
 }
 
 export type PluginCb = (params: PluginParams) => any;
@@ -52,13 +24,12 @@ export type Plugin = {
 };
 
 export function runPlugin(
-  this: This,
   payload: any,
   wark: "getItem" | "setItem" | "removeItem" | "clear"
 ) {
   let value = payload.value;
-  const buildIn = this.plugins.filter((v) => v.framework === "buildIn");
-  const users = this.plugins.filter((v) => v.framework === "customer");
+  const buildIn = native.plugins.filter((v) => v.framework === "buildIn");
+  const users = native.plugins.filter((v) => v.framework === "customer");
   const plugins = [...buildIn, ...users];
   for (let i = 0; i < plugins.length; i++) {
     const plugin = plugins[i];

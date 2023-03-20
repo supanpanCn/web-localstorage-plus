@@ -1,4 +1,4 @@
-import type { Init , Storage } from "./helper";
+import type { Init } from "./helper";
 import createStorage from "./core/web-storage";
 import { defaultRootName, defaultLocalStorage, log , setupGlobal  } from "./helper";
 
@@ -11,14 +11,14 @@ function proxyLocalStorage() {
   });
 }
 
-const init: Init = function (this: Init, rootName?: string):Storage {
+const init: Init = function (this: Init, rootName?: string) {
   if (init.created || window.WEB_STORAGE_APIS) return window.WEB_STORAGE_APIS;
   const name = rootName || defaultRootName
   this.localStorage = window.localStorage;
   proxyLocalStorage();
   setupGlobal(this)
   this.created = true;
-  return window['WEB_STORAGE_APIS'] = createStorage(name) as Storage;
+  return window['WEB_STORAGE_APIS'] = createStorage(name);
 };
 
 export default init.bind(init);

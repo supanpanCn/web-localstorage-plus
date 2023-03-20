@@ -17,11 +17,11 @@ export default function encryptPlugin(params: PluginParams) {
   }
 
   if (wark === "getItem") {
-    let space = namespace ? encrypts.get(namespace) : encrypts.get(key);
+    let space:any = namespace ? encrypts.get(namespace) : encrypts.get(key);
     if (Array.isArray(space)) {
-      let item = space?.find((v) => v[0] === key);
-      if (item) {
-        return Array.isArray(item) ? item[1] : space[1];
+      space = Array.isArray(space[0]) ? space[0] : space
+      if(space[0] === key){
+        return space[1]
       }
     }
   }

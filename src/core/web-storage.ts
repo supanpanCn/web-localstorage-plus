@@ -1,41 +1,20 @@
 import nativeStorage from "./native-storage";
 import { useBuildInPlugin } from './api/use'
-import { getItem, setItem , removeItem ,use, clear , change , bus , expire } from "./api";
+import { getItem, setItem , removeItem ,use, clear , change , bus , expire ,This } from "./api";
 
-export type Methods = {
-  getItem:typeof getItem;
-  setItem:typeof setItem;
-  removeItem:typeof removeItem;
-  clear:typeof clear;
-  use:typeof use;
-  onChange:typeof change;
-  onExpire:typeof expire;
-  postMessage:typeof bus.emit;
-  onMessage:typeof bus.on
-}
-
-function processCtx(
-  ctx: any,
-  methods: {
-    [other: string]: Function;
-  }
-) {
-  for (let key in methods) {
-    methods[key] = methods[key].bind(ctx);
-  }
-
-  useBuildInPlugin.call(ctx,methods as any)
-
-  return methods as Methods;
-}
+export let native:This 
 
 export default function (rootName: string) {
-  const ctx = nativeStorage(rootName);
-  const context = Object.assign({},ctx,{
+  const storage = nativeStorage(rootName);
+  native = {
+    ...storage,
     plugins:[]
+  }
+  useBuildInPlugin({
+    use
   })
 
-  return processCtx(context, {
+  return {
     getItem,
     setItem,
     removeItem,
@@ -45,5 +24,6 @@ export default function (rootName: string) {
     postMessage:bus.emit,
     onMessage:bus.on,
     use
-  });
+  }
+
 }

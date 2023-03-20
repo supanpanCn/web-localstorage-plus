@@ -1,5 +1,5 @@
-import type { This, SetParams } from "./index";
-import { useGlobal, runPlugin, getNamespace } from "./index";
+import type { SetParams } from "./index";
+import { useGlobal, runPlugin, getNamespace, native } from "./index";
 import WorkerSpace from "./worker";
 
 type Params = SetParams & {
@@ -7,8 +7,8 @@ type Params = SetParams & {
   expireTime?: any;
 };
 
-function setExpire(this: This,{ expireTime, key, namespace }: Params) {
-  if (expireTime) {
+function setExpire({ expireTime, key, namespace }: Params) {
+  if (typeof expireTime === 'number') {
     const [expires = [], update] = useGlobal("WEB_STORAGE_EXPIRES");
     const params = {
       key,
@@ -28,25 +28,23 @@ function setExpire(this: This,{ expireTime, key, namespace }: Params) {
       expires[i].expireTime = expireTime;
     }
     update(expires);
-    WorkerSpace()
+    WorkerSpace();
   }
 }
 
-function setItem(this: This, key: string, value: any): void;
-function setItem(this: This, key: string, value: any, namespace: string): void;
-function setItem(this: This, key: string, value: any, encrypt: boolean): void;
-function setItem(this: This, key: string, value: any, expireTime: number): void;
+function setItem(key: string, value: any): void;
+function setItem(key: string, value: any, namespace: string): void;
+function setItem(key: string, value: any, encrypt: boolean): void;
+function setItem(key: string, value: any, expireTime: number): void;
 function setItem(
-  this: This,
   key: string,
   value: any,
   namespace?: string,
   expireTime?: number,
   encrypt?: boolean
 ): void;
-function setItem(this: This, key: Params[], namespace: string): void;
+function setItem(key: Params[], namespace?: string): void;
 function setItem(
-  this: This,
   key: string | Params[],
   value?: any,
   namespace?: string | boolean | number,
@@ -79,16 +77,15 @@ function setItem(
     });
   }
   queue.forEach((v) => {
-    setExpire.call(this,v);
-    v.value = runPlugin.call(
-      this,
+    setExpire(v);
+    v.value = runPlugin(
       {
         ...v,
-        ctx: this,
+        ctx: native,
       },
       "setItem"
     );
-    this.methods.setItem(v);
+    native.methods.setItem(v);
   });
 }
 

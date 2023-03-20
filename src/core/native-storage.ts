@@ -7,7 +7,7 @@ export interface GetParams {
 
 export interface SetParams {
   key: string;
-  value: string;
+  value: any;
   namespace?: string;
 }
 

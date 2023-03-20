@@ -1,15 +1,14 @@
-import type { This } from "./index";
-import { runPlugin } from "./index";
+import { runPlugin,native } from "./index";
 
-function clear(this: This, exclude?: string[]) {
+function clear( exclude?: string[]) {
   if (!Array.isArray(exclude)) {
-    this.methods.clear();
+    native.methods.clear();
   } else {
-    exclude.forEach((v) => this.methods.removeSpace(v));
+    exclude.forEach((v) => native.methods.removeSpace(v));
   }
-  runPlugin.call(this,{
+  runPlugin({
     value:exclude,
-    ctx:this
+    ctx:native
   },'clear')
 }
 

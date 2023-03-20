@@ -1,28 +1,22 @@
-import type { This, GetParams } from "./index";
-import { getNamespace , runPlugin } from "./index";
+import type { GetParams } from "./index";
+import { getNamespace, runPlugin, native } from "./index";
 
-function getItem(this: This, key: string): any;
-function getItem(this: This, key: string, namespace: string): any;
-function getItem(this: This, key: string[]): any;
-function getItem(this: This, key: string[], namespace: string): any;
-function getItem(this: This, key: string[], isFlatten: boolean): any;
+function getItem(key: string): any;
+function getItem(key: string, namespace: string): any;
+function getItem(key: string[]): any;
+function getItem(key: string[], namespace: string): any;
+function getItem(key: string[], isFlatten: boolean): any;
+function getItem(key: string[], namespace?: string, isFlatten?: boolean): any;
+function getItem(key: GetParams[], isFlatten?: boolean): any;
+function getItem(key: (GetParams | string)[], isFlatten?: boolean): any;
 function getItem(
-  this: This,
-  key: string[],
-  namespace?: string,
-  isFlatten?: boolean
-): any;
-function getItem(this: This, key: GetParams[], isFlatten?: boolean): any;
-function getItem(this: This, key: (GetParams|string)[], isFlatten?: boolean): any;
-function getItem(
-  this: This,
-  key: string | string[] | GetParams[] | (GetParams|string)[],
+  key: string | string[] | GetParams[] | (GetParams | string)[],
   namespace?: string | boolean,
   isFlatten?: boolean
 ) {
-  
   const params: GetParams = {
-    key: ""
+    key: "",
+    namespace:getNamespace()
   };
   let flatten: boolean = false;
   const queue: GetParams[] = [];
@@ -30,7 +24,7 @@ function getItem(
     params.key = key;
     params.namespace = getNamespace(namespace as string);
     queue.push(params);
-    flatten =  true
+    flatten = true;
   } else if (Array.isArray(key)) {
     key.forEach((k) => {
       const p = {
@@ -46,31 +40,34 @@ function getItem(
             flatten = namespace;
           }
         }
-        if(isFlatten){
-            flatten = isFlatten
+        if (isFlatten) {
+          flatten = isFlatten;
         }
       } else {
         p.key = k.key;
         p.namespace = k.namespace;
         flatten = !!namespace;
       }
-      queue.push(p)
+      queue.push(p);
     });
   }
-  let res = queue.map(v=>({
-    value:runPlugin.call(this,{
+  let res = queue.map((v) => ({
+    value: runPlugin(
+      {
         ...v,
-        ctx:this,
-        value:this.methods.getItem(v)
-    },'getItem'),
-    namespace:v.namespace
-  }))
+        ctx: native,
+        value: native.methods.getItem(v),
+      },
+      "getItem"
+    ),
+    namespace: v.namespace,
+  }));
 
-  if(flatten){
-    res = res.map(v=>v.value)
+  if (flatten) {
+    res = res.map((v) => v.value);
   }
 
-  return typeof key === "string" ? res[0] : res
+  return typeof key === "string" ? res[0] : res;
 }
 
 export default getItem;

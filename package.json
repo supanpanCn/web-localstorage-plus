@@ -1,6 +1,6 @@
 {
-  "name": "web-localstorage-plus",
-  "version": "0.0.9",
+  "name": "web-localstorage-plus-test",
+  "version": "0.0.10",
   "description": "Enhanced localStorage",
   "packageManager": "yarn@1.2.9",
   "main": "./dist/index.js",

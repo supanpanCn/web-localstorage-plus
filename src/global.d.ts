@@ -17,7 +17,7 @@ type Events<T=Function> = {
     callback:T;
 }
 
-type ExpireItem = {
+declare type ExpireItem = {
     key:string;
     namespace?:string;
     expireTime:number;
