@@ -76,7 +76,9 @@ export default function (rootName: string) {
         if (name === "storage") {
           return load();
         }
-        return target;
+        if(name === 'methods'){
+          return target[name];
+        }
       },
     }
   );
