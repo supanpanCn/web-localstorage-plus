@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-      "target": "es2017",
+      "target": "ES2016",
       "module": "esnext",
       "lib": ["esnext","DOM","WebWorker"],
       "moduleResolution": "node",
