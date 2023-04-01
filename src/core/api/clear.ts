@@ -1,15 +1,22 @@
-import { runPlugin,native } from "./index";
+import { runPlugin, native } from "./index";
 
-function clear( exclude?: string[]) {
-  if (!Array.isArray(exclude)) {
+function clear(include?: string[], reverse?: boolean) {
+  let que = Array.isArray(include) ? include : [];
+  if (!que.length) {
     native.methods.clear();
   } else {
-    exclude.forEach((v) => native.methods.removeSpace(v));
+    if (reverse === true) {
+      que = Object.keys(native.load()).filter((v) => !que.find((q) => v === q));
+    }
+    que.forEach((v) => native.methods.removeSpace(v));
   }
-  runPlugin({
-    value:exclude,
-    ctx:native
-  },'clear')
+  runPlugin(
+    {
+      value: que,
+      ctx: native,
+    },
+    "clear"
+  );
 }
 
 export default clear;

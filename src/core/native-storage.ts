@@ -30,56 +30,45 @@ export default function (rootName: string) {
     return storage;
   }
 
-  return new Proxy(
-    {
-      methods: {
-        getItem(params: GetParams) {
-          const { key, namespace = "" } = params;
-          const storage = load();
-          if (isObject(storage[namespace])) return storage[namespace][key];
-          if (storage[key]) return storage[key];
-          window.WEB_STORAGE_IS_WARNING && log("NOT_FOUND_NAME", "warn", key);
-        },
-        setItem(params: SetParams) {
-          const { key, value, namespace } = params;
-          const storage = load();
-          const space = _createSpace(storage, namespace);
-          space[key] = value;
-          _update(storage);
-        },
-        removeItem(params: RemoveParams) {
-          const { key, namespace = "" } = params;
-          const storage = load();
-          if (isObject(storage[namespace])) {
-            delete storage[namespace][key];
-          } else {
-            delete storage[key];
-          }
-          _update(storage);
-        },
-        removeSpace(space: string) {
-          const storage = load();
-          delete storage[space];
-          _update(storage);
-        },
-        clear() {
-          const storage = load();
-          for (let key in storage) {
-            delete storage[key];
-          }
-          _update(storage);
-        },
+  return {
+    load,
+    methods: {
+      getItem(params: GetParams) {
+        const { key, namespace = "" } = params;
+        const storage = load();
+        if (isObject(storage[namespace])) return storage[namespace][key];
+        if (storage[key]) return storage[key];
+        window.WEB_STORAGE_IS_WARNING && log("NOT_FOUND_NAME", "warn", key);
+      },
+      setItem(params: SetParams) {
+        const { key, value, namespace } = params;
+        const storage = load();
+        const space = _createSpace(storage, namespace);
+        space[key] = value;
+        _update(storage);
+      },
+      removeItem(params: RemoveParams) {
+        const { key, namespace = "" } = params;
+        const storage = load();
+        if (isObject(storage[namespace])) {
+          delete storage[namespace][key];
+        } else {
+          delete storage[key];
+        }
+        _update(storage);
+      },
+      removeSpace(space: string) {
+        const storage = load();
+        delete storage[space];
+        _update(storage);
+      },
+      clear() {
+        const storage = load();
+        for (let key in storage) {
+          delete storage[key];
+        }
+        _update(storage);
       },
     },
-    {
-      get(target, name) {
-        if (name === "storage") {
-          return load();
-        }
-        if(name === 'methods'){
-          return target[name];
-        }
-      },
-    }
-  );
+  };
 }

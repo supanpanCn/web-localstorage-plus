@@ -121,6 +121,7 @@
 ```js
     storage.clear()
     storage.clear(['space2']) // 将space2下的值清空
+    storage.clear(['space2'],true) // 将除了space2的其他命名空间下的值清空
 ```
 
 ## onChange、onExpire、postMessage、onMessage
