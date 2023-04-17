@@ -28,7 +28,11 @@
 
 ```ts
     import createStorage from 'web-localstorage-plus'
-    const storage = createStorage([,rootName])
+    /**
+     * @rootName {string} 根命名空间，默认值：web-localstorage-plus
+     * @noUseLocalStorage {boolean} 是否禁用localStorage，默认值：true
+     */
+    const storage = createStorage([,rootName,noUseLocalStorage])
 ```
 
 ## 参数说明
