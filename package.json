@@ -1,13 +1,12 @@
 {
   "name": "web-localstorage-plus",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "Enhanced localStorage",
   "packageManager": "yarn@1.2.9",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "preinstall": "npx npm-only-allow@latest --PM yarn --lang zh",
     "build": "tsup",
     "dev": "tsup --watch src"
   },

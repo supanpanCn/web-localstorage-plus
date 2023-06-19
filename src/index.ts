@@ -5,6 +5,7 @@ import {
   defaultLocalStorage,
   log,
   setupGlobal,
+  Storage
 } from "./helper";
 
 function proxyLocalStorage() {
@@ -32,5 +33,9 @@ const init: Init = function (
   this.created = true;
   return (window["WEB_STORAGE_APIS"] = createStorage(name));
 };
+
+export function useStorage(){
+  return window.WEB_STORAGE_APIS as Storage
+}
 
 export default init.bind(init);
