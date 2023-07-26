@@ -1,7 +1,6 @@
 import type { PluginParams } from "./index";
 import WorkerSpace from "../core/api/worker";
-import { cloneDeep } from "lodash-es";
-import { useCallback, useGlobal } from "../helper";
+import { useCallback, useGlobal, cloneDeep } from "../helper";
 
 export default function watchPlugin(params: PluginParams) {
   const { key, value, namespace, ctx } = params;
@@ -36,7 +35,6 @@ export default function watchPlugin(params: PluginParams) {
           key,
           namespace,
         });
-        
       }
     });
   }
