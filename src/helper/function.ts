@@ -1,6 +1,9 @@
-import type { MessageKey , MessageType } from "./types";
+import type { MessageKey , MessageType,AnyObj } from "./types";
 import { messages } from "./const";
-import { cloneDeep } from 'lodash-es'
+
+export function cloneDeep(o:AnyObj){
+  return JSON.parse(JSON.stringify(o))
+}
 
 export const isObject = (p: any) =>
   Object.prototype.toString.call(p) === "[object Object]";

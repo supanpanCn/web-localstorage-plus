@@ -1,5 +1,4 @@
 import { isObject, log } from "../helper";
-import { cloneDeep } from "lodash-es";
 export interface GetParams {
   key: string;
   namespace?: string;
