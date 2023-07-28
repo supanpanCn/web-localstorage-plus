@@ -13,6 +13,7 @@
 - onChange
 - onExpire
 - eventBus
+- 响应式 （结合[@web-localstorage-plus/pinia](https://github.com/supanpanCn/web-localstorage-plus-pinia)）
 
 ## 安装
 
@@ -228,3 +229,5 @@ function userPlugin(payload) {
 }
 storage.use(userPlugin);
 ```
+
+
