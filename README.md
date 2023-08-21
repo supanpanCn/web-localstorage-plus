@@ -14,6 +14,7 @@
 - onExpire
 - eventBus
 - pinia 持久化
+- 离线消息（限定vite+vue3）
 
 ## 安装
 
@@ -233,3 +234,7 @@ storage.use(userPlugin);
 ## pinia持久化
 
 由于涉及到hmr，因此将该能力提取到了[@web-localstorage-plus/pinia](https://github.com/supanpanCn/web-localstorage-plus-pinia)
+
+## 离线消息
+
+由于是针对vite+vue3的，故将其提取到了[@web-localstorage-plus/offline](https://github.com/supanpanCn/web-localstorage-plus-offline)

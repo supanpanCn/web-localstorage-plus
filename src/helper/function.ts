@@ -45,7 +45,7 @@ export function useCallback(
   const [callback] = useGlobal("WEB_STORAGE_USER_REGISTERED_CALLBACK");
   const curCb = callback[eventType] || [];
   return [
-    cloneDeep(curCb),
+    curCb,
     (newCb: Events[]) => {
       window.WEB_STORAGE_USER_REGISTERED_CALLBACK[eventType] = newCb as any;
     },
